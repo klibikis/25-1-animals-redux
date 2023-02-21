@@ -6,20 +6,23 @@ import { addAnimal, deleteAnimal, saveAnimalsInLocalStorage, sortAnimals } from 
 function App() {
 
   const dispatch = useAppDispatch()
-  const [animalBreed, setAnimalBreed] = useState("")
+  const [newAnimal, setNewAnimal] = useState("")
+  const [animalImage, setAnimalImage] = useState("")
   
   const animal = useAppSelector((store) => {
     return store.animal.animals
   })
   const handleAddAnimal = () => {
-    dispatch(addAnimal(animalBreed))
+    dispatch(addAnimal({animal: newAnimal, image: animalImage}))
     dispatch(saveAnimalsInLocalStorage());
-    setAnimalBreed('')
+    setNewAnimal('')
+    setAnimalImage('')
   }
   useEffect(() => {
     dispatch(sortAnimals())
   }, [animal]);
   
+  console.log(animal)
 
   return (
     <div className="appWrapper">
@@ -34,11 +37,22 @@ function App() {
           <input 
             required
             type='text' 
-            placeholder = "Animal breed" 
-            className='input'
-            value = {animalBreed}
+            placeholder = "Animal" 
+            className='input input--rounded'
+            value = {newAnimal}
             onChange={(e) => {
-              setAnimalBreed(e.target.value)
+              setNewAnimal(e.target.value)
+            }}
+            >
+          </input>
+          <input 
+            required
+            type='text' 
+            placeholder = "Animal image" 
+            className='input'
+            value = {animalImage}
+            onChange={(e) => {
+              setAnimalImage(e.target.value)
             }}
             >
           </input>
@@ -54,11 +68,12 @@ function App() {
             key = {Math.random()}
             className = "singleAnimal"
             >
-            <h1>{animal.breed}</h1>
+            <img src = {animal.image} alt = {animal.animal} className = "animalImage"/>
+            <h1>{animal.animal}</h1>
             <button
               className='buttonAnimalDelete'
               onClick={() => {
-                dispatch(deleteAnimal(animal.breed))
+                dispatch(deleteAnimal(animal.animal))
                 dispatch(saveAnimalsInLocalStorage())
               }}
               >

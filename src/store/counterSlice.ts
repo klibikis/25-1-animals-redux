@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type Animal = {
-    breed: string;
+    animal: string;
+    image: string
 };
 
 type Animals = {
@@ -24,12 +25,12 @@ const animalSlice = createSlice({
     name: "animals",
     initialState,
     reducers: {
-        addAnimal: (state, action: PayloadAction<string>) => {
-            state.animals = [...state.animals, { breed: action.payload }];
+        addAnimal: (state, action: PayloadAction<Animal>) => {
+            state.animals = [...state.animals, action.payload];
         },
         deleteAnimal: (state, action: PayloadAction<string>) => {
             state.animals = state.animals.filter(
-                (animal) => animal.breed !== action.payload
+                (animal) => animal.animal !== action.payload
             );
         },
         // Use the PayloadAction type to declare the contents of `action.payload`
@@ -38,10 +39,10 @@ const animalSlice = createSlice({
         },
         sortAnimals: (state) => {
             function compare(a: Animal, b: Animal) {
-                if (a.breed < b.breed) {
+                if (a.animal < b.animal) {
                     return -1;
                 }
-                if (a.breed > b.breed) {
+                if (a.animal > b.animal) {
                     return 1;
                 }
                 return 0;
